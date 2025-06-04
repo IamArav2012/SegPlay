@@ -16,6 +16,8 @@ This model uses an U-shaped Vision Transformer (U-ViT) to semantically segment t
 - Uses [Transfer Learning](https://en.wikipedia.org/wiki/Transfer_learning) and model pretrained on Oxford-IIIt Pet Datset.
 - Avoids Mask Sharpening for medical interprebility and transparency.
 
+## Sample Prediction Image
+![Model Prediction](images/sample_prediction.png)
 
 ## Getting Started 
 ### Dataset
