@@ -38,7 +38,7 @@ def load_and_preprocess():
 
             if os.path.exists(mask_path):
             
-                img = load_img(img_path, target_size=(IMG_SIZE, IMG_SIZE), color_mode='rgb') # Dataset is grayscale but pretrained model was on rgb images
+                img = load_img(img_path, target_size=(IMG_SIZE, IMG_SIZE), color_mode='rgb') # Lung datset is grayscale but pretrained model was on rgb images
                 img = img_to_array(img) 
                 
                 mask = load_img(mask_path, target_size=(IMG_SIZE, IMG_SIZE), color_mode='grayscale')
@@ -50,26 +50,21 @@ def load_and_preprocess():
                 print(f'{len(lung_images)} sets of images and masks loaded')
             
 
-    # Preprocess images and masks
     num_samples = len(lung_images)
     load_batch_size = 32
 
     for i in range(0, num_samples, load_batch_size):
         end = min(i + load_batch_size, num_samples)
 
-        # Convert to array in batch
         images_batch = np.array(lung_images[i:end])
         masks_batch = np.array(lung_masks[i:end])
 
-        # Process images
         images_batch = images_batch.astype(np.float32) / 255.0
         images_batch = images_batch.reshape(-1, IMG_SIZE, IMG_SIZE, 3)
 
-        # Process masks
         masks_batch = (masks_batch > 0.5).astype(np.float32)
         masks_batch = masks_batch.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
 
-        # Overwrite in original list/array
         lung_images[i:end] = images_batch
         lung_masks[i:end] = masks_batch
 
@@ -140,5 +135,3 @@ if __name__ == '__main__':
     model.fit(train_ds, validation_data=val_ds, epochs=20, callbacks=[early_stopping_cb])
 
     model.save('lung_mri_segmentator.keras')
-
-    
