@@ -3,61 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import Lung_Segmentator as ls
 import os
-from tensorflow.keras.utils import load_img, img_to_array
-
-def load_and_preprocess_samples(num_total_samples):
-    lung_images = []
-    lung_masks = []
-
-    if num_total_samples // 3 != num_total_samples / 3:
-        fixed_samples = (num_total_samples // 3) * 3
-        print(f"Adjusted num_total_samples from {num_total_samples} → {fixed_samples} (must be multiple of 3)")
-        num_total_samples = fixed_samples
-
-    samples_per_dataset = num_total_samples // 3
-
-    root_folders = [f for f in os.listdir(base_dir) if f != 'utis']
-    if len(root_folders) < 3:
-        raise ValueError("Less than 3 valid dataset folders found.")
-
-    for root_folder in root_folders:
-        root_path = os.path.join(base_dir, root_folder)
-        img_dir = os.path.join(root_path, 'img')
-        mask_dir = os.path.join(root_path, 'mask')
-
-        if not os.path.isdir(img_dir) or not os.path.isdir(mask_dir):
-            continue
-
-        img_files = sorted(os.listdir(img_dir))
-        count = 0
-
-        for img_file in img_files:
-            if count >= samples_per_dataset:
-                break
-
-            img_path = os.path.join(img_dir, img_file)
-            mask_path = os.path.join(mask_dir, img_file)
-
-            if not os.path.exists(mask_path):
-                continue
-
-            img = img_to_array(load_img(img_path, target_size=(IMG_SIZE, IMG_SIZE), color_mode='rgb'))
-            mask = img_to_array(load_img(mask_path, target_size=(IMG_SIZE, IMG_SIZE), color_mode='grayscale'))
-
-            lung_images.append(img)
-            lung_masks.append(mask)
-            count += 1
-            print(f"Loaded: {len(lung_images)}")
-
-    lung_images = np.array(lung_images).astype(np.float32) / 255.0
-    lung_masks = (np.array(lung_masks) > 0.5).astype(np.float32)
-
-    lung_images = lung_images.reshape(-1, IMG_SIZE, IMG_SIZE, 3)
-    lung_masks = lung_masks.reshape(-1, IMG_SIZE, IMG_SIZE, 1)
-
-    dataset = tf.data.Dataset.from_tensor_slices((lung_images, lung_masks)).batch(batch_size).prefetch(tf.data.AUTOTUNE)
-
-    return dataset
 
 def sample_from_dataset(dataset, num_samples_to_get):
     collected_images = []
@@ -152,8 +97,9 @@ model = tf.keras.models.load_model('lung_mri_segmentator.keras',
                                    })
 
 # Extract test dataset
-test_dataset = load_and_preprocess_samples(500)
-
+x_test = np.load(os.path.join(ls.save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_images.npy'))
+y_test = np.load(os.path.join(ls.save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_masks.npy'))
+test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
 metrics = manual_evaluate(model, test_dataset)
 for name, value in metrics.items():
     print(f"{name}: {value:.4f}")

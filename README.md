@@ -9,7 +9,7 @@ This model uses an U-shaped Vision Transformer (U-ViT) to semantically segment t
 - Includes a dedicated analysis file.
 
 ## Highlights
-- Achieved a **92.3** percent dice coefficient and **0.09** dice loss on test dataset. 
+- Achieved a **93.98%** Dice Coefficient and **88.64%** IoU (Jaccard) Score on Test dataset. 
 - Utilizes a heavy augmentation-pipeline. 
 - Excellent generalization using techniques such as Dropout and L2 Regularization.
 - Uses OOP (Object-Oriented-Programming) for modularization.
@@ -22,7 +22,16 @@ This model uses an U-shaped Vision Transformer (U-ViT) to semantically segment t
 ## Getting Started 
 ### Dataset
 Download the integrated dataset from [this website](https://data.mendeley.com/datasets/8gf9vpkhgy/2).  
-For more information visit [DATASET_CITATION](https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model/blob/main/docs/DATASET_CITATION.md).  
+For more information visit [DATASET_CITATION](https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model/blob/main/docs/DATASET_CITATION.md).
+
+## Folder Management
+
+The script creates a folder named `new_folder` (or any folder name you provide) in the current working directory to save the `.npy` dataset files.
+
+- If the folder **does not exist**, it creates it.
+- If the folder **already exists**, it deletes the entire folder and its contents, then creates a fresh new one before saving the files.
+
+**Warning:** Any existing data in the folder will be permanently deleted when the script runs. Make sure to back up any important files before running.
 
 ### Installation 
 ```

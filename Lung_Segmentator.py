@@ -1,11 +1,10 @@
 import numpy as np
+import shutil
 import os
-os.environ['TF_DISABLE_MKL'] = '1'
 import tensorflow as tf
 import Pretrain_segmentator
 from tensorflow.keras.utils import load_img, img_to_array
 from sklearn.model_selection import train_test_split
-
 
 old_model_path = 'pretrained_segmentator_weights.keras'
 IMG_SIZE = 128
@@ -71,13 +70,34 @@ def load_and_preprocess():
     
     x_train_temp, x_test, y_train_temp, y_test = train_test_split(lung_images, lung_masks, random_state=42, test_size=0.2)
     x_train, x_val, y_train, y_val = train_test_split(x_train_temp, y_train_temp, test_size=0.3, random_state=42)
-
-    train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).map(augment, num_parallel_calls=tf.data.AUTOTUNE).shuffle(1000).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
-    val_dataset = tf.data.Dataset.from_tensor_slices((x_val, y_val)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
-    test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
     
-    return train_dataset, val_dataset, test_dataset
+    return x_train, y_train, x_val, y_val, x_test, y_test
 
+def save_datasets(new_folder_name, x_train, x_val, x_test, y_train, y_val, y_test, return_folder_path=False):
+    this_dir = os.path.dirname(os.path.abspath(__file__))
+    folder_path = os.path.join(this_dir, new_folder_name)
+    if not return_folder_path:
+        if os.path.exists(folder_path):
+            shutil.rmtree(folder_path)
+            print(f"Existing folder '{new_folder_name}' and all contents deleted.")
+        
+        os.mkdir(folder_path)
+        print(f"New folder '{new_folder_name}' created at {folder_path}")
+        
+        # Save .npy files inside the new folder
+        np.save(os.path.join(folder_path, 'train_images.npy'), x_train)
+        np.save(os.path.join(folder_path, 'val_images.npy'), x_val)
+        np.save(os.path.join(folder_path, 'test_images.npy'), x_test)
+        np.save(os.path.join(folder_path, 'train_masks.npy'), y_train)
+        np.save(os.path.join(folder_path, 'val_masks.npy'), y_val)
+        np.save(os.path.join(folder_path, 'test_masks.npy'), y_test)
+        
+        print("All .npy files have been saved successfully.")
+
+    else: 
+        print('New folder path will be returned as requested')
+        return folder_path        
+    
 
 def augment(image, mask):
     if tf.random.uniform(()) > 0.5:
@@ -119,8 +139,12 @@ def combined_loss(y_true, y_pred):
 if __name__ == '__main__':
     model = tf.keras.models.load_model(old_model_path)
 
-    train_ds, val_ds, test_ds = load_and_preprocess()
+    x_train, y_train, x_val, y_val, x_test, y_test = load_and_preprocess()
+    save_datasets("new_folder", x_train, x_val, x_test, y_train, y_val, y_test, return_folder_path=False)
 
+    train_dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train)).map(augment, num_parallel_calls=tf.data.AUTOTUNE).shuffle(1000).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
+    val_dataset = tf.data.Dataset.from_tensor_slices((x_val, y_val)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
+    test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)
     early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=4, min_delta=0.01, restore_best_weights=True)
@@ -132,6 +156,6 @@ if __name__ == '__main__':
     )
 
     model.summary()
-    model.fit(train_ds, validation_data=val_ds, epochs=20, callbacks=[early_stopping_cb])
+    model.fit(train_dataset, validation_data=val_dataset, epochs=20, callbacks=[early_stopping_cb])
 
     model.save('lung_mri_segmentator.keras')
