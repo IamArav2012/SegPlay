@@ -1,13 +1,12 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
+from config import IMG_SIZE, batch_size, dice_coef
 from tensorflow.keras import layers, regularizers, models
 from tensorflow.keras.saving import register_keras_serializable
 
 REGULARIZER_RATE = 0.001 
 DROPOUT_RATE = 0.15
 VALIDATION_SPLIT = 0.15
-batch_size = 4
-IMG_SIZE = 128
 L2_REG_RATE = 0.001
 vit_mlp_units = [512, 256]
 patch_size = 4
@@ -163,17 +162,6 @@ def build_uvit():
     outputs = layers.Conv2D(1, 1, activation='sigmoid')(d8)
     return models.Model(inputs, outputs)
 
-@register_keras_serializable()
-def dice_coef(y_true, y_pred, smooth=1e-6):
-    y_true_f = tf.reshape(y_true, [-1])
-    y_pred_f = tf.reshape(y_pred, [-1])
-    y_true_f = tf.cast(y_true_f, tf.float32)
-    y_pred_f = tf.cast(y_pred_f, tf.float32)
-    intersection = tf.reduce_sum(y_true_f * y_pred_f)
-    union = tf.reduce_sum(y_true_f) + tf.reduce_sum(y_pred_f)
-    return (2. * intersection + smooth) / (union + smooth)
-
-@register_keras_serializable()
 def dice_loss(y_true, y_pred):
     return 1 - dice_coef(y_true, y_pred)
 

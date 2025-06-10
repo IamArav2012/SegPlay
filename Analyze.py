@@ -1,7 +1,7 @@
 import tensorflow as tf
 import numpy as np
+from config import fine_tuned_model, batch_size, dice_coef, combined_loss, save_datasets
 import matplotlib.pyplot as plt
-import Lung_Segmentator as ls
 import os
 
 def sample_from_dataset(dataset, num_samples_to_get):
@@ -14,9 +14,9 @@ def sample_from_dataset(dataset, num_samples_to_get):
                          Maximum samples for this dataset is {len(dataset)}''')
 
     for batch_images, batch_masks in dataset:
-        batch_size = tf.shape(batch_images)[0].numpy()
+        batch_size_1 = tf.shape(batch_images)[0].numpy()
 
-        samples_needed_from_batch = min(batch_size, num_samples_to_get - samples_collected)
+        samples_needed_from_batch = min(batch_size_1, num_samples_to_get - samples_collected)
 
         if samples_needed_from_batch <= 0:
             break
@@ -86,19 +86,15 @@ def manual_evaluate(model, dataset, threshold=0.5):
         "Binary Crossentropy": bce_loss
     }
 
-base_dir = r'D:\ML\Medical Datasets\Chest X-ray dataset for lung segmentation' 
-IMG_SIZE = 128
-batch_size = 4
-
-model = tf.keras.models.load_model('lung_mri_segmentator.keras', 
+model = tf.keras.models.load_model(fine_tuned_model, 
                                    custom_objects={
-                                    'dice_coef': ls.dice_coef,
-                                    'combined_loss': ls.combined_loss,
+                                    'dice_coef': dice_coef,
+                                    'combined_loss': combined_loss,
                                    })
 
 # Extract test dataset
-x_test = np.load(os.path.join(ls.save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_images.npy'))
-y_test = np.load(os.path.join(ls.save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_masks.npy'))
+x_test = np.load(os.path.join(save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_images.npy'))
+y_test = np.load(os.path.join(save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_masks.npy'))
 test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
 metrics = manual_evaluate(model, test_dataset)
 for name, value in metrics.items():
