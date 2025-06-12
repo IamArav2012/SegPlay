@@ -1,7 +1,7 @@
 import os
 import tensorflow as tf
 from config import pretrained_weights_path, batch_size, base_dir, dice_loss, dice_coef, combined_loss, save_datasets, new_directory_name_for_npy_files, fine_tuned_model, parse_image
-from Pretrain_segmentator import Patchify, PatchEncoder
+from pretraining import Patchify, PatchEncoder
 from sklearn.model_selection import train_test_split
 
 LEARNING_RATE = 1e-4
