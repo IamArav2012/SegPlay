@@ -9,7 +9,7 @@ This model uses an U-shaped Vision Transformer (U-ViT) to semantically segment t
 - Includes a dedicated analysis file.
 
 ## Highlights
-- Achieved a **93.98%** Dice Coefficient and **88.64%** IoU (Jaccard) Score on Test dataset. 
+- Achieved a **94.04%** Dice Coefficient and **88.75%** IoU (Jaccard) Score on Test dataset. 
 - Utilizes a heavy augmentation-pipeline. 
 - Excellent generalization using techniques such as Dropout and L2 Regularization.
 - Uses OOP (Object-Oriented-Programming) for modularization.
