@@ -132,11 +132,11 @@ This script uses a ```load_and_preprocess()``` function and an augment function,
 ## Results and Analysis
 
 ### Metrics:
-- Dice Coefficient: ***0.9398***
-- Dice Loss: 0.0602
-- IoU (Intersection over Union): ***0.8864***
-- Pixel Accuracy: ***0.9615***
-- Binary-Crossentropy Loss: 0.1022
+- Dice Coefficient: ***0.9404***
+- Dice Loss:  0.0596
+- IoU (Intersection over Union): ***0.8875***
+- Pixel Accuracy: ***0.9622***
+- Binary-Crossentropy Loss: 0.1024
 
 ### Visualization:
 #### Easy Segmentation Image  
