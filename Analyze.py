@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
-from config import fine_tuned_model, batch_size, dice_coef, combined_loss, save_datasets
+from Pretrain_segmentator import Patchify, PatchEncoder
+from config import fine_tuned_model, batch_size, dice_loss, dice_coef, combined_loss, save_datasets, new_directory_name_for_npy_files, parse_image
 import matplotlib.pyplot as plt
 import os
 
@@ -90,12 +91,17 @@ model = tf.keras.models.load_model(fine_tuned_model,
                                    custom_objects={
                                     'dice_coef': dice_coef,
                                     'combined_loss': combined_loss,
-                                   })
+                                    'dice_loss': dice_loss,
+                                    'Patchify': Patchify,
+                                    'PatchEncoder': PatchEncoder
+                                    })
 
 # Extract test dataset
-x_test = np.load(os.path.join(save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_images.npy'))
-y_test = np.load(os.path.join(save_datasets("new_folder", None, None, None, None, None, None, return_folder_path=True), 'test_masks.npy'))
-test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
+dataset_path = save_datasets(new_directory_name_for_npy_files, None, None, None, None, None, None, return_folder_path=True)
+x_test = np.load(os.path.join(dataset_path, 'test_images.npy'))
+y_test = np.load(os.path.join(dataset_path, 'test_masks.npy'))
+test_dataset = tf.data.Dataset.from_tensor_slices((x_test, y_test)).map(parse_image, num_parallel_calls=tf.data.AUTOTUNE).batch(batch_size, drop_remainder=True).prefetch(tf.data.AUTOTUNE)
+
 metrics = manual_evaluate(model, test_dataset)
 for name, value in metrics.items():
     print(f"{name}: {value:.4f}")
@@ -103,7 +109,6 @@ for name, value in metrics.items():
 # Load individual images and masks
 images, masks = sample_from_dataset(test_dataset, num_samples_to_get=10)
 y_pred = model.predict(images)
-
 
 plt.figure(figsize=(12, 4))
 

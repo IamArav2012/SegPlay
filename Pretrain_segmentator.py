@@ -1,6 +1,6 @@
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from config import IMG_SIZE, batch_size, dice_coef
+from config import IMG_SIZE, batch_size, dice_coef, dice_loss, pretrained_weights_path
 from tensorflow.keras import layers, regularizers, models
 from tensorflow.keras.saving import register_keras_serializable
 
@@ -162,9 +162,6 @@ def build_uvit():
     outputs = layers.Conv2D(1, 1, activation='sigmoid')(d8)
     return models.Model(inputs, outputs)
 
-def dice_loss(y_true, y_pred):
-    return 1 - dice_coef(y_true, y_pred)
-
 if __name__ == '__main__':
 
     full_training_dataset = dataset['train']
@@ -196,7 +193,7 @@ if __name__ == '__main__':
     )
 
     model.fit(train_dataset, validation_data=val_dataset, epochs=EPOCHS, callbacks=[EarlyStopping])
-    model.save('pretrained_segmentator_weights.keras')
-    test_model_serialization = tf.keras.models.load_model('pretrained_segmentator_weights.keras')
+    model.save(pretrained_weights_path)
+    test_model_serialization = tf.keras.models.load_model(pretrained_weights_path)
 
     # 782/782 ━━━━━━━━━━━━━━━━━━━━ 747s 953ms/step - dice_coef: 0.8981 - loss: 0.1028 - val_dice_coef: 0.8925 - val_loss: 0.1076
