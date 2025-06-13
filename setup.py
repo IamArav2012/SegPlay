@@ -15,6 +15,7 @@ setup(
         "numpy",
         "matplotlib",
         "scikit-learn",
+        "tensorflow-datasets"
     ],
     python_requires=">=3.8",
     include_package_data=True,

@@ -2,3 +2,4 @@ tensorflow>=2.12.0
 tensorflow-datasets
 numpy
 scikit-learn
+matplotlib
