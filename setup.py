@@ -5,6 +5,7 @@ from setuptools import setup, find_packages
 setup(
     name="lung_segmentator",
     version="0.1.0",
+    url="https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model",
     description="A lightweight U-ViT-based lung segmentation package for fine-tuning, analysis, and experimentation",
     author="Arav Jha",
     author_email="linrajesh@gmail.com",

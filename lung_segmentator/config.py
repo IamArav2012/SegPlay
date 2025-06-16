@@ -1,4 +1,5 @@
-# config.py
+# lung_segmentator/config.py
+
 import tensorflow as tf
 import numpy as np
 import os
@@ -11,7 +12,7 @@ pretrained_weights_path = 'pretrained_segmentator_weights.keras'
 fine_tuned_model = 'lung_mri_segmentator.keras'
 batch_size = 4
 base_dir =  r'D:\ML\Medical Datasets\Chest X-ray dataset for lung segmentation'
-new_directory_name_for_npy_files = 'new_folder'
+new_directory_name_for_npy_files = 'npy_folder'
 
 # Reusable vars / config
 @register_keras_serializable()

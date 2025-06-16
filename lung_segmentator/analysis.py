@@ -1,6 +1,8 @@
+# lung_segmentator/analysis.py 
+
 import tensorflow as tf
 import numpy as np
-from pretraining import Patchify, PatchEncoder
+from layers import Patchify, PatchEncoder
 from config import fine_tuned_model, batch_size, dice_loss, dice_coef, combined_loss, save_datasets, new_directory_name_for_npy_files, parse_image
 import matplotlib.pyplot as plt
 import os

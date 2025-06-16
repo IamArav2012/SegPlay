@@ -1,10 +1,13 @@
+# lung_segmentator/fine_tuning.py
+
 import os
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import tensorflow as tf
 from config import pretrained_weights_path, batch_size, base_dir, dice_loss, dice_coef, combined_loss, save_datasets, new_directory_name_for_npy_files, fine_tuned_model, parse_image
-from pretraining import Patchify, PatchEncoder
+from layers import Patchify, PatchEncoder
 from sklearn.model_selection import train_test_split
 
-LEARNING_RATE = 1e-4
+learning_rate = 1e-4
 
 def load_dataset():
 
@@ -64,11 +67,8 @@ def load_dataset():
 
     save_datasets(new_directory_name_for_npy_files, x_train, x_val, x_test, y_train, y_val, y_test, return_folder_path=False)
 
-    return make_dataset(x_train, y_train, augment=True), make_dataset(x_val, y_val)
+    return make_dataset(x_train, y_train, augment=True), make_dataset(x_val, y_val), make_dataset(x_test, y_test)
 
-# Don't do "make_dataset(x_test, y_test)"" here ^ because results are not going to be anaylzed in this file
-# Doing make_dataset "(x_test, y_test)" wastes time and computational power
-# The variables x_test and y_test are already saved using save_datasets
 
 if __name__ == '__main__':
     model = tf.keras.models.load_model(pretrained_weights_path,
@@ -79,10 +79,32 @@ if __name__ == '__main__':
         'PatchEncoder': PatchEncoder
     })
 
-    train_ds, val_ds = load_dataset()
+    train_ds, val_ds, test_ds = load_dataset()
 
-    optimizer = tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE)
-    early_stopping_cb = tf.keras.callbacks.EarlyStopping(patience=4, min_delta=0.01, restore_best_weights=True)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=learning_rate)
+    early_stopping_cb = tf.keras.callbacks.EarlyStopping(
+        monitor='val_dice_coef',  
+        patience=6,
+        min_delta=0.001,  
+        mode='max',  
+        restore_best_weights=True
+    )
+
+    lr_scheduler = tf.keras.callbacks.ReduceLROnPlateau(
+        monitor='val_dice_coef',
+        factor=0.5,
+        patience=3,
+        min_lr=1e-6,
+        mode='max',
+        verbose=1
+    )
+
+    checkpoint_cb = tf.keras.callbacks.ModelCheckpoint(
+        filepath=fine_tuned_model,
+        monitor="val_dice_coef",
+        save_best_only=True,
+        mode="max",
+        )
 
     model.compile(
         optimizer=optimizer,
@@ -91,6 +113,6 @@ if __name__ == '__main__':
     )
 
     model.summary()
-    model.fit(train_ds, validation_data=val_ds, epochs=20, callbacks=[early_stopping_cb])
-
-    model.save(fine_tuned_model)
+    model.fit(train_ds, validation_data=val_ds, epochs=30, callbacks=[early_stopping_cb, lr_scheduler, checkpoint_cb])
+    loss_value, dice_coef_value = model.evaluate(test_ds)
+    print(f"Quick Evaluation: Loss: {loss_value:.4f}, Dice Coef: {dice_coef_value:.4f}")
