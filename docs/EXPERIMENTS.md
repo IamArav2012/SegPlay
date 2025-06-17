@@ -1,16 +1,17 @@
 # Experimentation Guide
 
-This file provides a set of guided experiments to help learners and researchers extend the base U-ViT model. These experiments are meant to reinforce foundational knowledge, test hypotheses, and possibly lead to improved performance or insights. Contributions are welcome!
+This fie provides guided experiments to help learners implement and extense the base U-ViT model. These experiments are meant to teach and/or reinforce foundational knowledge, encourage testing, and possibly lead to better performence or insights. Contributions by adding more experiments are very welcome. 
 
 This file will adhere to the following structured approach for each experiment: 
 
 #### Experiment Name
 - **Objective**: What’s being tested or changed?
-- **Why it matters**: The intuition behind it.
-- **Expected impact**: Hypothesize what might happen.
+- **Why it matters**: The intuition behind the experiment. 
+- **Expected impact**: Educated hypothesis on what might happen.
 - **How to implement**: A short summary or pointer in the codebase.
 - **Optional papers**: Links to references if relevant.
-- **Screenshot of actual in-code implementation**: Look at this after attempting the experiment yourself. 
+- **Screenshot of actual in-code implementation**: Look at this after attempting the experiment yourself.   
+***Note: Screenshots are not available yet — contributions or pull requests to add them are very welcome! ***
 
 ## Architecture Experiments
 
@@ -31,6 +32,14 @@ This file will adhere to the following structured approach for each experiment:
 
 **Screenshot:**
 
+### Add Decoders in ViT Block
+- **Objective**: Use the ViT encoder values, and Masked-Cross-Attention for improved attention. 
+- **Why it matters**: Tests how adding a ViT Decoder affects results for Segmentation.
+- **Expected impact**: .
+- **How to implement**: Add a ViT decoder in the ```pass_through_vit()``` block. Ensure shape compatibility.  
+
+**Screenshot:**
+
 ---
 
 ## Training & Optimization Experiments
@@ -45,7 +54,7 @@ This file will adhere to the following structured approach for each experiment:
 
 ### Use a Learning Rate Scheduler
 - **Objective**: Improve convergence behavior.
-- **How to implement**: Try cosine decay, exponential decay, or cyclical learning rates using `tf.keras.callbacks.LearningRateScheduler`.
+- **How to implement**: Try cosine decay, exponential decay, or cycle learning rates using `tf.keras.callbacks.LearningRateScheduler`.
 
 **Screenshot:**
 
@@ -54,8 +63,8 @@ This file will adhere to the following structured approach for each experiment:
 ## Data Augmentation Experiments
 
 ### Add Elastic Deformations
-- **Objective**: Simulate more realistic anatomical variability.
-- **Why it matters**: Helps the model generalize to real-world shape variations.
+- **Objective**: Simulate more realistic anatomical variability. 
+- **Why it matters**: Helps the model generalize better to real-world variations.
 - **How to implement**: Use `imgaug`, `albumentations`, or TensorFlow's custom functions.
 
 **Screenshot:**
