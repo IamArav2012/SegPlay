@@ -6,7 +6,13 @@ from .fine_tuning import load_dataset
 from .analysis import manual_evaluate, sample_from_dataset
 
 """
-This file contains the global configuration settings for the lung segmentator.
-To modify values for customizing behavior of the model, use "config.variable="
-Examples of variables that can be modified include IMG_SIZE, batch size, and the path variables.
+lung_segmentator package initializer.
+
+This file sets up the package namespace by importing key modules.
+
+Note to users:
+This repo is designed as a learning sandbox. You’re encouraged to
+directly modify the source files like config.py, fine_tuning.py, layers.py, etc.
+The __init__.py is primarily for organizing imports and should rarely
+need changes unless you want to customize package-level imports.
 """

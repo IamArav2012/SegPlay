@@ -39,23 +39,57 @@ This section will help you setup everything you need to jump into this sandbox. 
 Download the integrated dataset from [this website](https://data.mendeley.com/datasets/8gf9vpkhgy/2).  
 For more information visit [DATASET_CITATION](https://github.com/IamArav2012/SegPlay/blob/main/docs/DATASET_CITATION.md).
 
-**Go to ```__init__.py``` and modify ```config.base_dir=``` to your base folder directory of the segmentation files. By default these files are named  ```Chest X-ray dataset for lung segmentation```, if they are downloaded from [10.17632/8gf9vpkhgy.2](https://data.mendeley.com/datasets/8gf9vpkhgy/2)**  
+**Go to ```config.py``` and modify ```base_dir=``` variable to point to your local folder containing the segmentation files. By default these files are named  ```Chest X-ray dataset for lung segmentation```, if they are downloaded from [10.17632/8gf9vpkhgy.2](https://data.mendeley.com/datasets/8gf9vpkhgy/2)**  
 The following commands clone the repository using ```git```. If you don’t have Git installed, follow [this guide](https://github.com/git-guides/install-git).
 
 ## Philosophy
-This project is designed with learning, customization, and experimentation in mind, not just usage. Unlike traditional Python packages that are installed and used without inspecting or altering their internal code, this repo is meant to be cloned, explored, and modified directly.
+## Getting Started  
+This section will help you set up everything you need to jump into this sandbox. It also includes information on how to begin experimenting.
 
-**Why not just pip install?**
-Because that is not why this repo is built. 
+### Dataset  
+Download the integrated dataset from [this website](https://data.mendeley.com/datasets/8gf9vpkhgy/2).  
+For more information visit [DATASET_CITATION](https://github.com/IamArav2012/SegPlay/blob/main/docs/DATASET_CITATION.md).
 
-This codebase is built like a Python package for modularity and clarity, but it’s not meant to be locked away behind an install command. You're encouraged to:
+**Open `config.py` and modify the `base_dir` variable to point to your local folder containing the segmentation files.**  
+By default, these files are named `Chest X-ray dataset for lung segmentation` if downloaded from [10.17632/8gf9vpkhgy.2](https://data.mendeley.com/datasets/8gf9vpkhgy/2).
 
-- Dive into the config.py and tweak hyperparameters.
-- Modify layers, architectures, and training routines.
-- Add your own experiments, ideas, or visualization techniques.   
+Clone the repository using `git`. If you don’t have Git installed, follow [this guide](https://github.com/git-guides/install-git).
+
+---
+
+## Philosophy  
+This project is designed with learning, customization, and experimentation in mind — not just usage. Unlike traditional Python packages, which you install and rarely open up, this repo is meant to be cloned, explored, and modified directly.
+
+**Why not just `pip install`?**  
+Because this repo is built as a **sandbox**, not a locked-down package. 
+
+The codebase uses Python package conventions (including `__init__.py`) to organize the modules and enable clean imports within the repo. However, **you are encouraged to:**
+
+- Directly edit `config.py` to tweak hyperparameters and settings.
+- Modify `layers.py` and other modules to experiment with architectures and training code.
+- Add your own experiments and visualization tools.
+
+### Import style reminder  
+Because you will run scripts **directly from the repository folder**, internal imports use relative syntax like:
+
+```python
+from . import config
+from . import layers
+from .fine_tuning import load_dataset
+from .analysis import manual_evaluate, sample_from_dataset
+```   
+Scripts like `fine_tuning.py` or `analysis.py` should be run directly (e.g. `python fine_tuning.py`) and import modules relatively within the package.
 
 What about ```pyproject.toml```?
-Yes, a ```pyproject.toml``` is present, but mainly for advanced users who want to install this repo in “editable” mode using ```pip install -e .```. If you do this, you can run scripts as modules, e.g. ```python -m lung_segmentator.analysis```. *Again, direct edits are highly encouraged to reinforce learning through experimentation*.
+There **is** a `pyproject.toml` for advanced users who want to install the repo in editable mode via:
+``` bash
+pip install -e .
+```
+If you do this, you can run scripts as modules from anywhere, e.g:
+``` bash 
+python -m lung_segmentator.analysis
+```
+But **this is optional**. The recommended approach for beginners is to clone, edit files directly, and run scripts manually from the repo folder.
 
 Most users should not install this as a package. Instead:
 - Clone the repo

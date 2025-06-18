@@ -4,9 +4,10 @@ from os import environ
 environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import tensorflow as tf
 import tensorflow_datasets as tfds
-from config import IMG_SIZE, batch_size, dice_coef, dice_loss, pretrained_weights_path
+from .config import IMG_SIZE, batch_size, dice_coef, dice_loss, pretrained_weights_path
 from tensorflow.keras import layers, regularizers, models
-from layers import pass_through_vit
+from .layers import pass_through_vit
+
 
 dropout_rate = 0.15
 validation_split = 0.15
