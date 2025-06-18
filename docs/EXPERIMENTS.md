@@ -11,7 +11,7 @@ This file will adhere to the following structured approach for each experiment:
 - **How to implement**: A short summary or pointer in the codebase.
 - **Optional papers**: Links to references if relevant.
 - **Screenshot of actual in-code implementation**: Look at this after attempting the experiment yourself.   
-***Note: Screenshots are not available yet — contributions or pull requests to add them are very welcome! ***
+***Note: Screenshots are not available yet — contributions or pull requests to add them are very welcome!***
 
 ## Architecture Experiments
 

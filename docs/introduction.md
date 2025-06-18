@@ -15,7 +15,7 @@ This document assumes the reader has a foundational understanding of machine lea
 - [References](#references)
 
 ## Overview
-This document aims to explain the base model which implements a **U-ViT** (U-Shaped Vision Transformer) for accurate segmentation of the lungs in Chest X-ray images. This model aims to assist in the diagnosis of diseases and other abnormalities in the pulmonary domain. **As detailed in the ```README```, this model serves as a baseline; experiments and customization are highly encouraged. For additional guidance, see [```EXPERIMENTS.md```](no/link/yet)**. This implementation replicates a popular educational project among learners and is done only for educational and documentation purposes.   
+This document aims to explain the base model which implements a **U-ViT** (U-Shaped Vision Transformer) for accurate segmentation of the lungs in Chest X-ray images. This model aims to assist in the diagnosis of diseases and other abnormalities in the pulmonary domain. **As detailed in the ```README```, this model serves as a baseline; experiments and customization are highly encouraged. For additional guidance, see [```EXPERIMENTS.md```](https://github.com/IamArav2012/SegPlay/blob/main/docs/EXPERIMENTS.md)**. This implementation replicates a popular educational project among learners and is done only for educational and documentation purposes.   
 
 ## Motivation
 The base model was created for educational purposes and is open-source for anyone to contribute. The U-ViT technology used in this model is still relatively new, first developed by [Wang, Z., Cun, X., Bao, J., Zhou, W., Liu, J., & Li, H. (2022)](https://openaccess.thecvf.com/content/CVPR2022/papers/Wang_Uformer_A_General_U-Shaped_Transformer_for_Image_Restoration_CVPR_2022_paper.pdf). *This project was motivated by the lack of easy-to-use resources for safely experimenting with different architectural designs, particularly during the early stages of computer vision research.* ***This project aims to provide real-world value to beginners by moving beyond introductory experimentation with datasets like MNIST.*** **For this reason, the functions and classes in this package are written to emphasize clarity and modularity. Moreover, the augmentation pipeline structure and Keras serialization have been proactively handled.**
@@ -25,7 +25,7 @@ Two datasets were used to train this model:
 - Oxford_IIT Pet Dataset
 - Integrated Lung Segmentation Dataset (Darwin, Montgomery, and Shenzhen)  
 
-Refer to [DATA_CITATION.md](https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model/blob/main/docs/DATASET_CITATION.md) for additional details. 
+Refer to [DATA_CITATION.md](https://github.com/IamArav2012/SegPlay/blob/main/docs/DATASET_CITATION.md) for additional details. 
 
 ## Model Architecture 
 The base model uses the downsampling and upsampling blocks of a Unet and a ViT encoder as the bottleneck of the architecture.
@@ -174,7 +174,7 @@ These classes are decorated with ```@register_keras_serializable()``` to ensure 
 ## Results and Analysis
 ### Metrics:
 - Dice Coefficient: ***0.9404***
-- Dice Loss:  0.0596
+- Dice Loss: 0.0596
 - IoU (Intersection over Union): ***0.8875***
 - Pixel Accuracy: ***0.9622***
 - Binary-Crossentropy Loss: 0.1024

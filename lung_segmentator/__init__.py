@@ -1,7 +1,7 @@
 # lung_segmentator/__init__.py
 
 from . import config
-from .layers import Patchify, PatchEncoder
+from . import layers
 from .fine_tuning import load_dataset
 from .analysis import manual_evaluate, sample_from_dataset
 
