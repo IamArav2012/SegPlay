@@ -44,7 +44,7 @@ Upsampling block (3x)
  ↓
 Output layer (Sigmoid Activation)
 ```
-#### Downsampling block
+#### Downsampling Block
 ```
 Conv2D()
 BatchNormalization()
@@ -62,7 +62,7 @@ Activation()
 Dropout()
 ```
 
-#### Feature Extraction block (Modified Downsampling block)
+#### Feature Extraction Block (Modified Downsampling block)
 ```
 Conv2D()
 BatchNormalization()
@@ -71,7 +71,7 @@ Dropout()
 (no MaxPooling)
 ```
 
-#### Initial Upsampling block (Modified upsampling block)
+#### Initial Upsampling Block (Modified upsampling block)
 ```
 Conv2DTranspose()
 (no Concatenate)
@@ -92,13 +92,13 @@ Dropout()
 
 6. Additionally, the model increases the number of feature maps before the ViT block to compensate for reduced spatial information, enabling better capture of complex features crucial for precise segmentation.
 
-### Unet encoder: 
+### U-Net Encoder: 
 - Convolutional Layer  
     - Each downsampling block contains a ```Conv2D``` layer. It uses kernels, a set of weights, and slides it directly onto the input image(s), producing feature maps. In this case, the feature maps double every encoder block following common practice, allowing effortless numerical manipulation. Increasing feature maps too quickly can cause degraded-quality feature maps while increasing feature maps too slowly can result in a model that has unnecessary computational cost. The padding is set to ```'same'``` for consistent dimensions, important for skip connections (```Concatenate()```). A ```l2 regularization``` is added to promote generalization and prevent overfitting by penalizing large weights, encouraging the model to learn simpler patterns. In the model, a L2 regularization of ```kernel_regularizer=0.001``` is implemented as it is generally a good starting point. For more information about Convolutional layers, visit [*U-Net: Convolutional Networks for Biomedical Image Segmentation*](https://arxiv.org/pdf/1505.04597).
 - Max Pooling    
     - A Max Pooling (```MaxPooling2D()```) layer uses a technique called "pooling" to downsample images by a certain amount, contingent on hyperparameters like ```pool_size``` and ```strides```. In the model, a ```pool_size=2``` is used, and ```strides``` is not explicitly defined since, by default, ```strides``` is set equal to the ```pool_size``` unless defined otherwise. A ```MaxPooling2D()``` layer is used in each downsampling block, as well as there corresponding ```Conv2DTranspose()``` and ```Concatenate()``` layers. Max Pooling is significant because it allows convolutional layers to effectively have a "larger" receptive field since they extract the maximum value from each pool, allowing deeper pattern recognition as model depth increases. To learn more, visit the classic novel paper [*ImageNet Classification with Deep Convolutional Neural Networks*](https://proceedings.neurips.cc/paper_files/paper/2012/file/c399862d3b9d6b76c8436e924a68c45b-Paper.pdf). 
 
-### ViT bottleneck
+### ViT Bottleneck
 The exact architecture is: 
 ```
 InputValidator.validate_pass_through_vit()
@@ -185,7 +185,7 @@ These classes are decorated with ```@register_keras_serializable()``` to ensure 
 #### Difficult Segmentation Image  
 ![Difficult Model Prediction](../images/difficult_sample_prediction.png)
 #### Overlay Map    
-![Overlay Map](../images/overlay_map_sample.png)
+<img src="../images/overlay_map_sample.png" width="500"></img>
 
 ## References
 1. Z. Wang, X. Cun, J. Bao, J. Zhang, J. Liu, C. Shen, and Q. Chen, “Uformer: A general U-shaped transformer for image restoration,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), 2022, pp. 17662–17672. [Online]. Available: https://doi.org/10.1109/CVPR52688.2022.01716

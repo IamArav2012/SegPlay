@@ -14,19 +14,19 @@ The Oxford-IIIT dataset is used for pretraining while an integrated lung dataset
 ## Base Model Visualization
 
 ### Overall U-ViT Architecture 
-![Overall U-ViT Architecture](images/uvit_architecture.png)
+<img src="images/uvit_architecture.png" alt="Overall U-ViT Architecture" width="550">  
 
 ### Downsampling Block
-![Downsampling Block](images/downsampling_block.png)
+<img src="images/downsampling_block.png" alt="Downsampling Block" width="200">
 
 ### Upsampling Block 
-![Upsampling Block](images/upsampling_block.png)
+<img src="images/upsampling_block.png" alt="Upsampling Block" width="200">
 
-### ViT Bottleneck
-![ViT Bottleneck](images/vit_bottleneck.png)
+### Vision Transformer Bottleneck
+<img src="images/vit_bottleneck.png" alt="Upsampling Block" width="425">
 
-### ViT Block
-![ViT Block](images/vit_block.png)
+### Vision Transformer Block
+<img src="images/vit_block.png" alt="ViT Block" width="550">  
 
 For more **insight** about the base architecture, visit [`introduction.md`](https://github.com/IamArav2012/SegPlay/blob/main/docs/introduction.md). 
 
@@ -183,5 +183,3 @@ This project is licensed under the [MIT License](https://github.com/IamArav2012/
 ## ⭐ If You Like This Project
 If this repo helped you, consider **starring it** ⭐️ to help more learners discover it.  
 Feel free to share it with friends, communities, or anyone getting started in machine learning.
-
-![scale3](images/scale3.png)
