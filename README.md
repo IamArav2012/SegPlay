@@ -17,17 +17,7 @@ The Oxford-IIIT dataset is used for pretraining while an integrated lung dataset
 <img src="images/uvit_architecture.png" alt="Overall U-ViT Architecture" width="650">  
 
 ### Downsampling and Upsampling Blocks
-<br>
-<p align="center">
-  <div style="display: inline-block; text-align: center; margin-right: 50px;">
-    <sub style="display: block; margin-bottom: 20px; font-size: 14px;">Downsampling Block</sub>
-    <img src="images/downsampling_block.png" width="200"/>
-  </div>
-  <div style="display: inline-block; text-align: center;">
-    <sub style="display: block; margin-bottom: 20px; font-size: 14px;">Upsampling Block</sub>
-    <img src="images/upsampling_block.png" width="200"/>
-  </div>
-</p>
+<img src="images/downsampling_and_upsampling_img.png" width="300"/>
 
 ### Vision Transformer Bottleneck
 <img src="images/vit_bottleneck.png" alt="Upsampling Block" width="500">
