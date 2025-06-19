@@ -11,6 +11,25 @@ The base model uses an U-shaped Vision Transformer (U-ViT) to semantically segme
 - A Vision Transformer([ViT](https://en.wikipedia.org/wiki/Vision_transformer)) for optimal feature extraction. 
 The Oxford-IIIT dataset is used for pretraining while an integrated lung dataset is used for fine-tuning.
 
+## Base Model Visualization
+
+### Overall U-ViT Architecture 
+![Overall U-ViT Architecture](images/uvit_architecture.png)
+
+### Downsampling Block
+![Downsampling Block](images/downsampling_block.png)
+
+### Upsampling Block 
+![Upsampling Block](images/upsampling_block.png)
+
+### ViT Bottleneck
+![ViT Bottleneck](images/vit_bottleneck.png)
+
+### ViT Block
+![ViT Block](images/vit_block.png)
+
+For more **insight** about the base architecture, visit [`introduction.md`](https://github.com/IamArav2012/SegPlay/blob/main/docs/introduction.md). 
+
 ## Project Structure
 ```
 lung_segmentator/
@@ -165,12 +184,4 @@ This project is licensed under the [MIT License](https://github.com/IamArav2012/
 If this repo helped you, consider **starring it** ⭐️ to help more learners discover it.  
 Feel free to share it with friends, communities, or anyone getting started in machine learning.
 
-
-
-
-scale 1
-![scale1](images/scale1.png)
-scale 2
-![scale2](images/scale2.png)
-scale 3
 ![scale3](images/scale3.png)
