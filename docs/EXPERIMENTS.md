@@ -1,6 +1,6 @@
 # Experimentation Guide
 
-This fie provides guided experiments to help learners implement and extense the base U-ViT model. These experiments are meant to teach and/or reinforce foundational knowledge, encourage testing, and possibly lead to better performence or insights. Contributions by adding more experiments are very welcome. 
+This fie provides guided experiments to help learners implement and extend the base U-ViT model. These experiments are meant to teach and/or reinforce foundational knowledge, encourage testing, and possibly lead to better performance and insights. Contributions by adding more experiments are very welcome. 
 
 This file will adhere to the following structured approach for each experiment: 
 
@@ -109,7 +109,7 @@ This file will adhere to the following structured approach for each experiment:
 ## Notes for Contributors
 
 - Feel free to fork and submit a pull request with new experiments!
-- Be sure to update the README if you run any experiments from this list.
+- Be sure to update the README if you run any experiments from this list!
 
 Acknowledgement:
 *This `EXPERIMENTS.md` file was primarily generated through advanced prompting with ChatGPT, then reviewed and refined by the author.*

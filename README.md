@@ -17,9 +17,16 @@ The Oxford-IIIT dataset is used for pretraining while an integrated lung dataset
 <img src="images/uvit_architecture.png" alt="Overall U-ViT Architecture" width="650">  
 
 ### Downsampling and Upsampling Blocks
+<br>
 <p align="center">
-  <img src="images/downsampling_block.png" width="200" style="margin-right: 50px;"/>
-  <img src="images/upsampling_block.png" width="200"/>
+  <div style="display: inline-block; text-align: center; margin-right: 50px;">
+    <sub style="display: block; margin-bottom: 20px; font-size: 14px;">Downsampling Block</sub>
+    <img src="images/downsampling_block.png" width="200"/>
+  </div>
+  <div style="display: inline-block; text-align: center;">
+    <sub style="display: block; margin-bottom: 20px; font-size: 14px;">Upsampling Block</sub>
+    <img src="images/upsampling_block.png" width="200"/>
+  </div>
 </p>
 
 ### Vision Transformer Bottleneck
@@ -61,22 +68,7 @@ For more information visit [DATASET_CITATION](https://github.com/IamArav2012/Seg
 **Go to ```config.py``` and modify ```base_dir=``` variable to point to your local folder containing the segmentation files. By default these files are named  ```Chest X-ray dataset for lung segmentation```, if they are downloaded from [10.17632/8gf9vpkhgy.2](https://data.mendeley.com/datasets/8gf9vpkhgy/2)**  
 The following commands clone the repository using ```git```. If you don’t have Git installed, follow [this guide](https://github.com/git-guides/install-git).
 
-## Philosophy
-## Getting Started  
-This section will help you set up everything you need to jump into this sandbox. It also includes information on how to begin experimenting.
-
-### Dataset  
-Download the integrated dataset from [this website](https://data.mendeley.com/datasets/8gf9vpkhgy/2).  
-For more information visit [DATASET_CITATION](https://github.com/IamArav2012/SegPlay/blob/main/docs/DATASET_CITATION.md).
-
-**Open `config.py` and modify the `base_dir` variable to point to your local folder containing the segmentation files.**  
-By default, these files are named `Chest X-ray dataset for lung segmentation` if downloaded from [10.17632/8gf9vpkhgy.2](https://data.mendeley.com/datasets/8gf9vpkhgy/2).
-
-Clone the repository using `git`. If you don’t have Git installed, follow [this guide](https://github.com/git-guides/install-git).
-
----
-
-## Philosophy  
+### Philosophy  
 This project is designed with learning, customization, and experimentation in mind — not just usage. Unlike traditional Python packages, which you install and rarely open up, this repo is meant to be cloned, explored, and modified directly.
 
 **Why not just `pip install`?**  
@@ -88,7 +80,7 @@ The codebase uses Python package conventions (including `__init__.py`) to organi
 - Modify `layers.py` and other modules to experiment with architectures and training code.
 - Add your own experiments and visualization tools.
 
-### Import style reminder  
+#### Import style reminder  
 Because you will run scripts **directly from the repository folder**, internal imports use relative syntax like:
 
 ```python
@@ -117,7 +109,7 @@ Most users should not install this as a package. Instead:
 
 **The recommended installation process is explained below in the *Installation* section**. 
 
-# Installation
+## Installation
 ``` bash
 # Clone the repo
 git clone https://github.com/IamArav2012/SegPlay.git
@@ -149,7 +141,7 @@ The script ```fine_tuning.py``` creates a folder named `npy_folder` (or any fold
 **Warning:** Any existing data in the folder will be permanently deleted when the script runs. Make sure to back up any important files before running. 
 
 ## Learning by Doing
-***Note: This section expects the user to have cloned this package***
+***Note: This section expects the user to have cloned this package.***  
 Instead of passively reading tutorials, this repo encourages code tweaking and self-driven hands-on learning. 
 
 Start by tweaking values in ```config.py```, or try replacing the ViT block with different architectures in ```pretraining.py```. ***For more information on utilizing this sandbox, visit [EXPERIMENTS.md](https://github.com/IamArav2012/SegPlay/blob/main/docs/EXPERIMENTS.md)***

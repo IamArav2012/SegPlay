@@ -15,12 +15,12 @@ This document assumes the reader has a foundational understanding of machine lea
 - [References](#references)
 
 ## Overview
-This document aims to explain the base model which implements a **U-ViT** (U-Shaped Vision Transformer) for accurate segmentation of the lungs in Chest X-ray images. This model aims to assist in the diagnosis of diseases and other abnormalities in the pulmonary domain. **As detailed in the ```README```, this model serves as a baseline; experiments and customization are highly encouraged. For additional guidance, see [```EXPERIMENTS.md```](https://github.com/IamArav2012/SegPlay/blob/main/docs/EXPERIMENTS.md)**. This implementation replicates a popular educational project among learners and is done only for educational and documentation purposes.   
+This document aims to explain the base model which implements a **U-ViT** (U-Shaped Vision Transformer) for accurate segmentation of the lungs in Chest X-ray images. **As detailed in the ```README```, this model serves as a baseline; experiments and customization are highly encouraged. For additional guidance, see [```EXPERIMENTS.md```](https://github.com/IamArav2012/SegPlay/blob/main/docs/EXPERIMENTS.md)**. This implementation replicates a popular educational project among learners and is done only for educational and documentation purposes.   
 
 ## Motivation
 The base model was created for educational purposes and is open-source for anyone to contribute. The U-ViT technology used in this model is still relatively new, first developed by [Wang, Z., Cun, X., Bao, J., Zhou, W., Liu, J., & Li, H. (2022)](https://openaccess.thecvf.com/content/CVPR2022/papers/Wang_Uformer_A_General_U-Shaped_Transformer_for_Image_Restoration_CVPR_2022_paper.pdf). *This project was motivated by the lack of easy-to-use resources for safely experimenting with different architectural designs, particularly during the early stages of computer vision research.* ***This project aims to provide real-world value to beginners by moving beyond introductory experimentation with datasets like MNIST.*** **For this reason, the functions and classes in this package are written to emphasize clarity and modularity. Moreover, the augmentation pipeline structure and Keras serialization have been proactively handled.**
 
-## Dataset 
+## Datasets
 Two datasets were used to train this model:
 - Oxford_IIT Pet Dataset
 - Integrated Lung Segmentation Dataset (Darwin, Montgomery, and Shenzhen)  
@@ -28,9 +28,13 @@ Two datasets were used to train this model:
 Refer to [DATA_CITATION.md](https://github.com/IamArav2012/SegPlay/blob/main/docs/DATASET_CITATION.md) for additional details. 
 
 ## Model Architecture 
-The base model uses the downsampling and upsampling blocks of a Unet and a ViT encoder as the bottleneck of the architecture.
+The base model uses the downsampling and upsampling blocks of a UNet and a ViT encoder as the bottleneck of the architecture.  
 
-### Overall U-ViT Model Architecture   
+### Overall U-ViT Model Architecture 
+<img src="../images/overall_architecture_representation.png"></img>  
+
+Although this image provides a complete visualization of the base model, it is visually complex and cognitively taxing to fully comprehend. Therefore, each component will be broken down individually, with explanations provided to link them into a cohesive depiction of the overall model.
+
 ```
 Downsampling block (3x)
  ↓
@@ -115,7 +119,7 @@ MultiHeadAttention block:
  Add()
 ```
 1. InputValidator.validate_pass_through_vit()
-    - **The ```InputValidatior``` class is designed to centralize the warnings of all architecture blocks both current and future.** For now, it only houses warnings of the ```pass_through_vit()``` function. This line calls the ```validate_pass_through_vit()``` method, which raises ```ValueError```s to make sure the block does not fail quietly or behave unexpectedly.
+    - **The ```InputValidatior``` class is designed to centralize the warnings of all architecture blocks both current and future.** For now, it only houses warnings of the ```pass_through_vit()``` function. This line calls the ```validate_pass_through_vit()``` method, which raises ```ValueErrors``` to make sure the block does not fail quietly or behave unexpectedly.
 
 2. Patchify  
     - This custom class named ```Patchify``` integrates the output of the U-Net's downsampling block with the ViT architecture. This class leverages TensorFlow’s ```tf.extract_patches``` to generate patches from the feature maps. Patches of size 4×4  are extracted, resulting in 16 patches for ViT processing. Likewise, it also reshapes the input from ```(batch_size, img_height, img_width, feature_maps)``` to ```(batch_size, img_size, patch_dims)```. The values of ```feature_maps``` and ```patch_dims``` remain numerically unchanged, but the variables are renamed for conceptual clarity.
@@ -124,35 +128,35 @@ MultiHeadAttention block:
     - This is a custom class named ```PatchEncoder``` which performs a linear transformation and provides ```positional_embedding``` for spatial context, to the patch embeddings. It converts the patch pixel values into vector embeddings for ViT processing, then adds learned positional embeddings to provide spatial context to the model. The positional embeddings are derived from a learned ```layers.Embedding``` layer that takes indices as its input. The ```Embedding``` layer does not produce values in a sinusoidal manner by using ```sin(x)``` and ```cos(x)``` like it does in [NLP Transformers](https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)), but rather uses a *trainable layer* to generate ```positional_embeddings```.
 
 4. LayerNormalization 
-    - Layer Normalization is a version of ```Batch_Normalization``` that was first used in [*Layer Normalization*](https://arxiv.org/pdf/1607.06450). Layer Normalization works identically to batch_normalization except that it calculates mean and standard deviation for each feature and adjusts them separately instead of operating with averaged values among the entire batch. The bases model includes ```epsilon = 10e-6``` to avoid a division by 0 error and to stabilize gradients. For more about batch_normalization visit the **BatchNormalization** section below. 
+    - Layer Normalization is a version of ```Batch_Normalization``` that was first used in [*Layer Normalization*](https://arxiv.org/pdf/1607.06450). Layer Normalization works identically to ```batch_normalization``` except that it calculates mean and standard deviation for each feature and adjusts them separately instead of operating with averaged values among the entire batch. The bases model includes ```epsilon = 10e-6``` to avoid a division by 0 error and to stabilize gradients. For more about ```batch_normalization``` visit the [**Common Layers Used Across Architecture**](#Common-Layers-Used-Across-Architecture) section below. 
  
 5. MultiHeadAttention  
-    - ```MultiHeadAttention``` is used in all modern transformers to help generalization and quicken convergence. It was first used in [*Attention Is All You Need*](https://arxiv.org/pdf/1706.03762). ```layers.MultiHeadAttention(num_heads=attention_heads, key_dim=projection_dims, dropout=0.1)``` in the code for modularity and to avoid hard-coding. Dropout in this stage helps to combat overfitting. 
+    - ```MultiHeadAttention``` is used in all modern transformers to help generalization and quicken convergence. It was first used in [*Attention Is All You Need*](https://arxiv.org/pdf/1706.03762). The code in ```layers.py``` contains ```layers.MultiHeadAttention(num_heads=attention_heads, key_dim=projection_dims, dropout=dropout)``` for modularity and to avoid hard-coding. Dropout in this stage helps to combat overfitting. 
 6. Add  
-    - This is a residual layer used for preventing [vanishing gradients](https://en.wikipedia.org/wiki/Vanishing_gradient_problem). The ```Add()``` is used after all major layers like the Mlp and MultiHeadAttention. This layer was derived from the ResNET architecture which was first implemented in [*Deep Residual Learning for Image Recognition*](https://arxiv.org/pdf/1512.03385).
+    - This is a residual layer used for preventing [vanishing gradients](https://en.wikipedia.org/wiki/Vanishing_gradient_problem). The ```Add()``` is used after all major layers like the MLP and MultiHeadAttention. This layer was derived from the ResNET architecture which was first implemented in [*Deep Residual Learning for Image Recognition*](https://arxiv.org/pdf/1512.03385).
 7. Mlp 
-    - This is a version of a FFN([Feedforward_Neural_Network](https://en.wikipedia.org/wiki/Feedforward_neural_network)). It uses dense and dropout layers to expand and condense the data for optimal feature extraction. This also ensures shape compatibility.
+    - This is a version of a FFN ([Feedforward_Neural_Network](https://en.wikipedia.org/wiki/Feedforward_neural_network)). It uses dense and dropout layers to expand and condense the data for optimal feature extraction. This also ensures shape compatibility.
 
 ### U-Net Decoder
 1. Conv2DTranspose  
-    - ```Conv2DTranspose()``` uses **Transposed Convolution**, also known as **Deconvolution**, to effectively reverse the effect of convolutional layers. This is a ```Conv2D()```and ```UpSampling()``` inspired layer which essentially uses a learned upsampling operation using kernels. Mathematically, it reverses the effect of a ```Conv2D()``` by "spreading out" the values. This is superior to ```UpSampling``` because it learns kernel weights, similar to how ```Conv2D``` layers do. **It’s worth noting that ```Conv2DTranspose``` isn’t a true inverse of ```Conv2D```; instead, it learns to upsample in a way that roughly reverses the original operation.**  This mechanism was first developed in [*Fully Convolutional Networks for Semantic Segmentation*](https://arxiv.org/pdf/1605.06211v1). Furthermore, to fully understand this concept the paper [*A Guide to Convolution Arithmetic for Deep Learning*](https://arxiv.org/pdf/1603.07285) is also recommended.  
+    - ```Conv2DTranspose()``` uses **Transposed Convolution**, also known as **Deconvolution**, to effectively reverse the effect of convolutional layers. This is a ```Conv2D()```and ```UpSampling()``` inspired layer which essentially uses a learned upsampling operation using kernels. Mathematically, it reverses the effect of a ```Conv2D()``` by "spreading out" the values. This is superior to ```UpSampling``` because it learns kernel weights, similar to how ```Conv2D``` layers do. **For clarity, note that ```Conv2DTranspose``` isn’t a true inverse of ```Conv2D```; instead, it learns to upsample in a way that roughly reverses the original operation.**  This mechanism was first developed in [*Fully Convolutional Networks for Semantic Segmentation*](https://arxiv.org/pdf/1605.06211v1). Furthermore, to fully understand this concept the paper [*A Guide to Convolution Arithmetic for Deep Learning*](https://arxiv.org/pdf/1603.07285) is also recommended.  
  
 2. Concatenate  
-    - The function ```Concatenate``` is used to implement [Skip Connections](https://medium.com/@preeti.gupta02.pg/understanding-skip-connections-in-convolutional-neural-networks-using-u-net-architecture-b31d90f9670a) to refactor the encoder's feature maps into consideration. The idea of skip connections was first used in the original U-Net paper [*U-Net: Convolutional Networks for Biomedical Image Segmentation*](https://arxiv.org/pdf/1505.04597). 
+    - The function ```Concatenate()``` is used to implement [Skip Connections](https://medium.com/@preeti.gupta02.pg/understanding-skip-connections-in-convolutional-neural-networks-using-u-net-architecture-b31d90f9670a) to refactor the encoder's feature maps into consideration. The idea of skip connections was first used in the original U-Net paper, [*U-Net: Convolutional Networks for Biomedical Image Segmentation*](https://arxiv.org/pdf/1505.04597). 
 
 3. ```Conv2D(1, 1, activation='sigmoid')```
-    - This layer uses a **1 by 1 kernel** and the ```'sigmoid'``` activation to generate pixel by pixel mask predictions. The 1 by 1 kernel ensures the mask has the same spatial dimensions as the input image since it has already been upsampled to appropriate dimensions ```(128 by 128)```. Additionally, the ```sigmoid``` activation function, in this case, mainly saturates the output into a range from 0 to 1 to make the mask interpretable.
+    - This layer uses a **1 by 1 kernel** and the ```'sigmoid'``` activation to generate pixel by pixel mask predictions. The 1 by 1 kernel ensures the mask has the same spatial dimensions as the input image since it has already been upsampled to appropriate dimensions ```(128 by 128)```. Additionally, the ```sigmoid``` activation function, in this case, saturates the output into a range from 0 to 1 to make the mask interpretable.
 
 ### Common Layers Used Across Architecture  
 These layers will be more thoroughly explained as they are universal not just to this architecture, but to almost all Deep-Learning Neural Networks. 
 
 1. Batch Normalization  
-    - ```BatchNormalization()``` uses a process of subtracting the mean of the data and dividing by the square root of the standard deviation. Then the output is scaled and shifted, meaning learnable multiplication and addition operations occur. This essentially eliminates a problem in neural networks called [Internal Covariate Shift](https://en.wikipedia.org/wiki/Batch_normalization). This idea was originally introduced by the paper, [*Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift*](https://arxiv.org/pdf/1502.03167). Batch Normalization has inspired many other types of Normalization layers including LayerNorm, InstanceNorm, GroupNorm, and SpectralNorm.  
+    - ```BatchNormalization()``` uses a process of subtracting the mean of the data and dividing by the standard deviation. Then the output is scaled and shifted, meaning learnable multiplication and addition operations occur. This essentially eliminates a problem in neural networks called [Internal Covariate Shift](https://en.wikipedia.org/wiki/Batch_normalization). This idea was originally introduced by the paper, [*Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift*](https://arxiv.org/pdf/1502.03167). Batch Normalization has inspired many other types of Normalization layers including LayerNorm, InstanceNorm, GroupNorm, and SpectralNorm.  
 2. Activation  
     - An activation function, as the name suggests, applies an activation to the input. There are innumerable activation functions but the ones used here are ```'gelu'``` and, primarily, ```'relu'```. The ReLU function is defined as ```f(x) = max(0, x)```, zeroing out negative inputs while keeping positive inputs unchanged. It was a breakthrough because it avoids saturation in positive values, unlike previously common functions like tanh(x). The ```GELU``` activation function also works to saturate negative values but rather than eliminating them, it incorporates small negative values in the neural network, helping exceptionally deep models like [**BERT**](https://huggingface.co/docs/transformers/en/model_doc/bert) and [**GPT**](https://zapier.com/blog/what-is-gpt/). ReLU is applied consistently across the model for its efficiency and reliability, while GELU is reserved for the ```mlp()``` unit in the transformer to better capture non-linear features.”
       
 3. Dropout  
-    - ```Dropout()``` is a technique introduced by [*A Simple Way to Prevent Neural Networks from Overfitting*](https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf). It randomly disables a percentage  (```dropout_rate```) of activations in a layer forcing the model to learn redundant and comprehensive representations. This is an anti-overfitting technique that improves generalization, similar to ```regularization``` but utilizing nuanced methodology. Different dropout rates are used in ```pass_through_vit()```,  ```build_uvit()```, and ```mlp()``` ranging from 0.1 (10%) to 0.35 (35%) depending on the sensitivity of each component to overfitting.
+    - ```Dropout()``` is a technique introduced by [*A Simple Way to Prevent Neural Networks from Overfitting*](https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf). It randomly disables a percentage  (```dropout_rate```) of activations in a layer forcing the model to learn redundant and comprehensive representations. This is an anti-overfitting technique that improves generalization, similar to ```regularization``` but utilizing increasingly nuanced methodology. Different dropout rates are used in ```pass_through_vit()```,  ```build_uvit()```, and ```mlp()``` ranging from 0.1 (10%) to 0.35 (35%) depending on the sensitivity of each component to overfitting.
 
 ## Training Setup 
 ### pretraining.py
@@ -169,7 +173,7 @@ This script uses a ```load_and_preprocess()``` function and an augment function,
 3. ```ModelCheckpoint``` saves the best model based on ```'val_dice_coef'``` to prevent overfitting or divergence in later epochs, which may occur due to the forgiving nature of the implemented ```EarlyStopping``` callback.
 
 ### Serialization
-These classes are decorated with ```@register_keras_serializable()``` to ensure they can be seamlessly loaded by the ```fine_tuning.py``` and ```analysis.py``` modules. The functions are loaded using ```tensorflow.keras.models.load_model()```, which relies on the ```custom_objects``` argument. To keep everything robust and consistent, the ```custom_objects``` function also includes these classes.
+The custom classes are decorated with ```@register_keras_serializable()``` to ensure they can be seamlessly loaded by the ```fine_tuning.py``` and ```analysis.py``` modules. The functions are loaded using ```tensorflow.keras.models.load_model()```, which relies on the ```custom_objects``` argument. To keep everything robust and consistent, the ```custom_objects``` function also includes these custom classes.
 
 ## Results and Analysis
 ### Metrics:
