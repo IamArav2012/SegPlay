@@ -82,7 +82,7 @@ This file will adhere to the following structured approach for each experiment:
 
 ### Compare Predictions with and without Attention
 - **Objective**: Quantify attention’s real value in segmentation.
-- **How to implement**: Run ablation: remove the ViT block entirely and analyze differences.
+- **How to implement**: Run ablation; remove the ViT block entirely and analyze differences.
 
 **Screenshot:**
 
@@ -109,7 +109,7 @@ This file will adhere to the following structured approach for each experiment:
 ## Notes for Contributors
 
 - Feel free to fork and submit a pull request with new experiments!
-- Be sure to update the README or include results in `results/` if you run any experiments from this list.
+- Be sure to update the README if you run any experiments from this list.
 
 Acknowledgement:
 *This `EXPERIMENTS.md` file was primarily generated through advanced prompting with ChatGPT, then reviewed and refined by the author.*

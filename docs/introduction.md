@@ -152,7 +152,7 @@ These layers will be more thoroughly explained as they are universal not just to
     - An activation function, as the name suggests, applies an activation to the input. There are innumerable activation functions but the ones used here are ```'gelu'``` and, primarily, ```'relu'```. The ReLU function is defined as ```f(x) = max(0, x)```, zeroing out negative inputs while keeping positive inputs unchanged. It was a breakthrough because it avoids saturation in positive values, unlike previously common functions like tanh(x). The ```GELU``` activation function also works to saturate negative values but rather than eliminating them, it incorporates small negative values in the neural network, helping exceptionally deep models like [**BERT**](https://huggingface.co/docs/transformers/en/model_doc/bert) and [**GPT**](https://zapier.com/blog/what-is-gpt/). ReLU is applied consistently across the model for its efficiency and reliability, while GELU is reserved for the ```mlp()``` unit in the transformer to better capture non-linear features.”
       
 3. Dropout  
-    - ```Dropout()``` is a technique introduced by [*A Simple Way to Prevent Neural Networks from Overfitting*](https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf). It randomly disables a percentage  (```dropout_rate```) of activations in a layer forcing the model to learn redundant and comprehensive representations. This is an anti-overfitting technique that improves generalization, similar to ```regularization``` but utilizing nuanced methodology. Different dropout rates are used in ```pass_through_vit()```,  ```build_uvit()```, and ```mlp()``` ranging from 0.1 (10%) to 0.35 (35%) depending on how crucial the operation is for overfitting.  
+    - ```Dropout()``` is a technique introduced by [*A Simple Way to Prevent Neural Networks from Overfitting*](https://jmlr.org/papers/volume15/srivastava14a/srivastava14a.pdf). It randomly disables a percentage  (```dropout_rate```) of activations in a layer forcing the model to learn redundant and comprehensive representations. This is an anti-overfitting technique that improves generalization, similar to ```regularization``` but utilizing nuanced methodology. Different dropout rates are used in ```pass_through_vit()```,  ```build_uvit()```, and ```mlp()``` ranging from 0.1 (10%) to 0.35 (35%) depending on the sensitivity of each component to overfitting.
 
 ## Training Setup 
 ### pretraining.py
@@ -185,7 +185,7 @@ These classes are decorated with ```@register_keras_serializable()``` to ensure 
 #### Difficult Segmentation Image  
 ![Difficult Model Prediction](../images/difficult_sample_prediction.png)
 #### Overlay Map    
-<img src="../images/overlay_map_sample.png" width="500"></img>
+<img src="../images/overlay_map_sample.png"></img>
 
 ## References
 1. Z. Wang, X. Cun, J. Bao, J. Zhang, J. Liu, C. Shen, and Q. Chen, “Uformer: A general U-shaped transformer for image restoration,” in Proc. IEEE/CVF Conf. Comput. Vis. Pattern Recognit. (CVPR), 2022, pp. 17662–17672. [Online]. Available: https://doi.org/10.1109/CVPR52688.2022.01716
