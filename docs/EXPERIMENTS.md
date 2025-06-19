@@ -112,4 +112,4 @@ This file will adhere to the following structured approach for each experiment:
 - Be sure to update the README or include results in `results/` if you run any experiments from this list.
 
 Acknowledgement:
-*Some content in this guide was developed with the help of [ChatGPT](https://chat.openai.com), based on custom project context and ideas.*
+*This `EXPERIMENTS.md` file was primarily generated through advanced prompting with ChatGPT, then reviewed and refined by the author.*

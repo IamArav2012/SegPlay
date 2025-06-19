@@ -156,7 +156,7 @@ This is a sandbox.
 ***Try, Break, Learn, and Share.***
 
 ## License and Acknowledgments 
-This project is licensed under the [MIT License](https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model/blob/main/LICENShttps://github.com/IamArav2012/SegPlay/blob/main/LICENSE). This license allows full reusability of the code, allowing exploration. The author built this with help from [OpenAI’s ChatGPT](https://chatgpt.com/), and is a self-taught enthusiast with no formal degree in deep learning, aiming to make the field more approachable for others.
+This project is licensed under the [MIT License](https://github.com/IamArav2012/U_ViT-Lung-Segmentation-Model/blob/main/LICENShttps://github.com/IamArav2012/SegPlay/blob/main/LICENSE). This license allows full reusability of the code, allowing exploration. The author is a self-taught enthusiast with no formal degree in deep learning, aiming to make the field more approachable for others. The author built this entire repository with help from [OpenAI’s ChatGPT](https://chatgpt.com/) for ideas and polishing. 
 
 ## A Note From the Author 
 "When I started learning deep learning, I wished for a place like this — not just a perfect model, but a sandbox where I could explore. I hope this helps make the field feel a little more approachable." 
@@ -164,3 +164,13 @@ This project is licensed under the [MIT License](https://github.com/IamArav2012/
 ## ⭐ If You Like This Project
 If this repo helped you, consider **starring it** ⭐️ to help more learners discover it.  
 Feel free to share it with friends, communities, or anyone getting started in machine learning.
+
+
+
+
+scale 1
+![scale1](images/scale1.png)
+scale 2
+![scale2](images/scale2.png)
+scale 3
+![scale3](images/scale3.png)
