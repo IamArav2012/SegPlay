@@ -137,11 +137,15 @@ Instead of passively reading tutorials, this repo encourages code tweaking and s
 Start by tweaking values in ```config.py```, or try replacing the ViT block with different architectures in ```pretraining.py```. ***For more information on utilizing this sandbox, visit [EXPERIMENTS.md](https://github.com/IamArav2012/SegPlay/blob/main/docs/EXPERIMENTS.md)***
 
 ## Initial Results
-Despite this model being beginner-friendly, it achieves strong results. The following metrics are derived from an unseen test dataset:
-- **94.04%** Dice Coefficient 
-- **88.75%** IoU (Jaccard) Score      
+*Despite this model being beginner-friendly, it achieves strong results*. The following metrics are derived from an unseen test dataset:
+- **95.51%** Dice Coefficient 
+- **91.41%** IoU (Jaccard) Score      
 
-These results are not state-of-the-art by any means, but they are a **solid baseline.** As I have already stated, the point of this repository is not to present a ground-breaking model, but to provide a simple but powerful resource to beginners.  
+These results are not state-of-the-art by any means, but they are a **solid baseline.** As I have already stated, the point of this repository is not to present a ground-breaking model, but to provide a simple but powerful resource to beginners. **If you'd like to download the base model `.keras` file that achieved these results, please use the links below:**
+- [Pretraining Model](https://drive.google.com/file/d/1gxOX0LWoYmEtRuCmoxqrJDYcpxPr9DVU/view)
+- [Lung Segmentator](https://drive.google.com/file/d/1VE_HQKiwgFNQVuIUrxRwfLlGiOAbOfTI/view)  
+
+The `npy_folder` will not be provided, as `.npy` files could not be reliably transferred via Google Drive. Downloads were often unsuccessful or resulted in corrupted files.
 
 ## Sample Prediction Image
 ![Sample Lung Segmentation](images/sample_prediction.png)

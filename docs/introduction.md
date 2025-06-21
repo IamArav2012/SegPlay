@@ -177,11 +177,11 @@ The custom classes are decorated with ```@register_keras_serializable()``` to en
 
 ## Results and Analysis
 ### Metrics:
-- Dice Coefficient: ***0.9404***
-- Dice Loss: 0.0596
-- IoU (Intersection over Union): ***0.8875***
-- Pixel Accuracy: ***0.9622***
-- Binary-Crossentropy Loss: 0.1024
+- Dice Coefficient: ***0.9551***
+- Dice Loss: 0.0449
+- IoU (Intersection over Union): ***0.9141***
+- Pixel Accuracy: ***0.9712***
+- Binary-Crossentropy Loss: 0.0795
 
 ### Visualization:
 #### Easy Segmentation Image  
