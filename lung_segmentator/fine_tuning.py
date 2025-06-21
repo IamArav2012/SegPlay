@@ -3,13 +3,13 @@
 import os
 os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"
 import tensorflow as tf
-from .config import (
+from config import (
     pretrained_weights_path, batch_size, base_dir,
     dice_loss, dice_coef, combined_loss,
     save_datasets, new_directory_name_for_npy_files,
     fine_tuned_model, parse_image
 )
-from .layers import Patchify, PatchEncoder
+from layers import Patchify, PatchEncoder
 from sklearn.model_selection import train_test_split
 
 learning_rate = 1e-4
